@@ -5,12 +5,11 @@ import java.util.ArrayList;
 public class Main {
 
 	private static HashMap<Clubmember, Song> AllSongs = new HashMap<Clubmember, Song>();
-	private ArrayList<Request> requests = new ArrayList<Request>();
+	private static ArrayList<Request> requests = new ArrayList<Request>();
 	private static ArrayList<Clubmember> Clubmembers = new ArrayList<Clubmember>();
 
 	public static void main (String args[]) {
 		loadSongs();
-		System.out.println(AllSongs.get(Clubmembers.get(1)).getTitle());
 		mainMenu();
 	}
 	
@@ -32,7 +31,35 @@ public class Main {
 		AllSongs.put(Clubmembers.get(4), new Song(5, "All of Me", "John Legend"));
 		AllSongs.put(Clubmembers.get(5), new Song(6, "A Thousand Years", "Christina Perri"));
 		AllSongs.put(Clubmembers.get(6), new Song(7, "Make You Feel My Love", "Adele"));
-}
+	}
+
+	public static void Order(){
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("Order a song for Valentine’s Day...\n" + //
+						"Select the song from this list:");
+		for(int i = 0; i < AllSongs.size(); i++){
+			System.out.println((i + 1) + " - " + AllSongs.get(Clubmembers.get(i)).getTitle() + " - " + AllSongs.get(Clubmembers.get(i)).getArtist());
+		}
+		System.out.println("Your choice (1 – 7):");
+
+		String choice = sc.nextLine();
+		
+		System.out.println("Enter your email address:");
+		String email = sc.nextLine();
+		System.out.println("Enter your credit card number:");
+		String cc_num = sc.nextLine();
+		System.out.println("Enter your sweetheart's name:");
+		String sweetheart = sc.nextLine();
+		
+		Clubmember member = Clubmembers.get(Integer.parseInt(choice));
+		Song song = AllSongs.get(member);
+
+		requests.add(new Request(email, Integer.parseInt(cc_num), sweetheart, member, song));
+
+		System.out.println("Done!");
+		System.out.println(requests.size());
+	}
 
 	public static void mainMenu() {
 		while(true) {
@@ -42,11 +69,17 @@ public class Main {
 			
 			String option = sc.next();
 			
-			if(option == "exit"){
+			if(option.equals("exit")){
 				break;
+			} else if (option.equals("1")){
+				Order();
+			} else if (option.equals("2")){
+				
+			} else if (option.equals("3")){
+				
+			} else if (option.equals("4")){
+				
 			}
-			
-			System.out.println("You picked " + option);
 		}
 	}
 }
