@@ -13,6 +13,31 @@ public class Main {
 		loadSongs();
 		mainMenu();
 	}
+
+	private static void Songs_done(){
+		Scanner sc = new Scanner(System.in);
+		Clubmember member = null;
+
+		System.out.println("Report back that your songs are done...");
+		System.out.println("Enter your memeber ID number: ");
+
+		
+		try{
+			int memId = sc.nextInt();
+			member = Clubmembers.get(memId - 1);
+		} catch (Exception e) {
+			System.out.println("Enter valid ID number");
+			System.exit(0);
+		}
+
+		System.out.println("Your customers will be charged and notified");
+
+		for(int i = 0; i < requests.size(); i++) {
+			if(member == requests.get(i).getMember()) {
+				System.out.println("Email sent to: " + requests.get(i).getEmail() + "\n\n\n"); 
+			}
+		}
+	}
 	
 	private static void loadSongs(){
 		
@@ -37,29 +62,40 @@ public class Main {
 	public static void Order(){
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("Order a song for Valentine’s Day...\n" + //
+		System.out.println("\n\n\nOrder a song for Valentine’s Day...\n" + //
 						"Select the song from this list:");
-		for(int i = 0; i < AllSongs.size(); i++){
-			System.out.println((i + 1) + " - " + AllSongs.get(Clubmembers.get(i)).getTitle() + " - " + AllSongs.get(Clubmembers.get(i)).getArtist());
+		for(int i = 0; i < 7; i++){
+			try {
+				System.out.println((i + 1) + " - " + AllSongs.get(Clubmembers.get(i)).getTitle() + " - " + AllSongs.get(Clubmembers.get(i)).getArtist());
+			} catch (Exception e){
+				System.out.println((i + 1) + " - NOT TAKING ORDERS");
+			}
 		}
 		System.out.println("Your choice (1 – 7):");
 
 		String choice = sc.nextLine();
 		
-		System.out.println("Enter your email address:");
+		System.out.println("\n\nEnter your email address:");
 		String email = sc.nextLine();
 		System.out.println("Enter your credit card number:");
 		String cc_num = sc.nextLine();
 		System.out.println("Enter your sweetheart's name:");
 		String sweetheart = sc.nextLine();
 		
-		Clubmember member = Clubmembers.get(Integer.parseInt(choice));
+		Clubmember member = Clubmembers.get(Integer.parseInt(choice) - 1);
 		Song song = AllSongs.get(member);
 
-		requests.add(new Request(email, Integer.parseInt(cc_num), sweetheart, member, song));
+		try{
+			AllSongs.get(member).getArtist();
+		} catch (Exception e){
+			System.out.println("\n\n\nNot taking orders");
+			return;
+		}	
+		requests.add(new Request(email, Long.parseLong(cc_num), sweetheart, member, song));
 
-		System.out.println("Done!");
-		System.out.println(requests.size());
+
+		System.out.println("\n\n\nDone!\n\n\n");
+		
 	}
 
 	public static void songReport(){
@@ -77,7 +113,7 @@ public class Main {
 			}
 		}
 		if(member == null){
-			System.out.println("Member ID not found.");
+			System.out.println("\nMember ID not found.\n");
 		}
 
 		System.out.println("Found member: " + member.getName());
@@ -102,16 +138,18 @@ public class Main {
             System.out.println(memberReq.get(i).getSweetheart());
         }
 		} else {
-			System.out.println("No requests at this time.");
+			System.out.println("\n\n\nNo requests at this time.\n\n\n");
 		}
 		
+		AllSongs.remove(member);
+
 	}
 
 	public static void mainMenu() {
+		
 		while(true) {
 			Scanner sc = new Scanner(System.in);
-			
-			System.out.println("Welcome to the Serenaders' Music Club Valentine's Song System!\nSelect the action to do:\n1 - Customers - Order a song for Valentine's Day\n2 - Club members - Get a report of the requests for your song\n3 - Club members - Report back that your songs are done\n4 - Admin - Show data for all club members\nEnter 1, 2, 3 or 4:");
+			System.out.println("\n\nWelcome to the Serenaders' Music Club Valentine's Song System!\nSelect the action to do:\n1 - Customers - Order a song for Valentine's Day\n2 - Club members - Get a report of the requests for your song\n3 - Club members - Report back that your songs are done\n4 - Admin - Show data for all club members\nEnter 1, 2, 3 or 4:");
 			
 			String option = sc.next();
 			
@@ -122,10 +160,11 @@ public class Main {
 			} else if (option.equals("2")){
 				songReport();
 			} else if (option.equals("3")){
-				
+				Songs_done();
 			} else if (option.equals("4")){
 				
 			}
 		}
+
 	}
 }

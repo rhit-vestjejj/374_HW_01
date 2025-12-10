@@ -7,7 +7,7 @@ public class Request {
     private Clubmember member;
     private Song song;
 
-    public Request(String email, int cc_num, String sweetheart, Clubmember member, Song song){
+    public Request(String email, long cc_num, String sweetheart, Clubmember member, Song song){
         this.email = email;
         this.cc_num = cc_num;
         this.sweetheart = sweetheart;
