@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -61,11 +62,56 @@ public class Main {
 		System.out.println(requests.size());
 	}
 
+	public static void songReport(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Get a report of requests for your song...");
+		System.out.println("Enter your member ID:");
+
+		int memberId = sc.nextInt();
+
+		Clubmember member = null;
+		for(Clubmember cm : Clubmembers){
+			if(cm.getMemberId() == memberId){
+				member = cm;
+				break;
+			}
+		}
+		if(member == null){
+			System.out.println("Member ID not found.");
+		}
+
+		System.out.println("Found member: " + member.getName());
+		
+		//this stores all the requests that belong to the member
+		ArrayList<Request> memberReq = new ArrayList<Request>();
+		for(Request req: requests){
+			if (req.getMember().getMemberId() == memberId){
+				memberReq.add(req);
+			}
+		}
+		System.out.println("Look for an email with a list of all the sweethearts to sing to!");
+		
+		System.out.println("Email Report");
+		System.out.println("To: " + member.getName());
+		System.out.println("Subject: Valentine Day Song Requests");
+		System.out.println("You have " + memberReq.size() + " requests for your song:");
+		System.out.println("Sing to the following sweethearts:");
+		
+		if(!memberReq.isEmpty()){
+        for(int i = 0; i < memberReq.size(); i++){
+            System.out.println(memberReq.get(i).getSweetheart());
+        }
+		} else {
+			System.out.println("No requests at this time.");
+		}
+		
+	}
+
 	public static void mainMenu() {
 		while(true) {
 			Scanner sc = new Scanner(System.in);
 			
-			System.out.println("Welcome to the Serenaders' Music Club Valentine's Song System!\nSelect the action to do:\n1 - Customers - Order a song for Valentine's Day\n2 - Club members - Get a report of the requests for your song\n3 - Club members - Report back tat your songs are done\n4 - Admin - Show data for all club members\nEnter 1, 2, 3 or 4:");
+			System.out.println("Welcome to the Serenaders' Music Club Valentine's Song System!\nSelect the action to do:\n1 - Customers - Order a song for Valentine's Day\n2 - Club members - Get a report of the requests for your song\n3 - Club members - Report back that your songs are done\n4 - Admin - Show data for all club members\nEnter 1, 2, 3 or 4:");
 			
 			String option = sc.next();
 			
@@ -74,7 +120,7 @@ public class Main {
 			} else if (option.equals("1")){
 				Order();
 			} else if (option.equals("2")){
-				
+				songReport();
 			} else if (option.equals("3")){
 				
 			} else if (option.equals("4")){

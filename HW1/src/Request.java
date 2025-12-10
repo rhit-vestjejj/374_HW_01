@@ -1,6 +1,6 @@
 public class Request {
     private String email;
-    private int cc_num;
+    private long cc_num;
     private String sweetheart;
     private Boolean done;
 
@@ -19,7 +19,7 @@ public class Request {
         return email;
     }
 
-    public int getCcNum() {
+    public long getCcNum() {
         return cc_num;
     }
 
