@@ -8,6 +8,7 @@ public class Main {
 	private static HashMap<Clubmember, Song> AllSongs = new HashMap<Clubmember, Song>();
 	private static ArrayList<Request> requests = new ArrayList<Request>();
 	private static ArrayList<Clubmember> Clubmembers = new ArrayList<Clubmember>();
+	private static ArrayList<Request> requests_done = new ArrayList<Request>();
 
 	public static void main (String args[]) {
 		loadSongs();
@@ -31,10 +32,19 @@ public class Main {
 		}
 
 		System.out.println("Your customers will be charged and notified");
+		
+		
+		for(Request req : requests){
+			if(member == req.getMember()) {
+				System.out.println("Email sent to: " + req.getEmail() + "\n\n\n");
+				requests_done.add(req);		
+				req.setDone();	
+			}
+		}
 
-		for(int i = 0; i < requests.size(); i++) {
-			if(member == requests.get(i).getMember()) {
-				System.out.println("Email sent to: " + requests.get(i).getEmail() + "\n\n\n"); 
+		for(int i = 0; i < requests.size(); i++){
+			if(requests.get(i).getDone()){
+				requests.remove(i);
 			}
 		}
 	}
@@ -145,26 +155,35 @@ public class Main {
 
 	}
 
+	public static void admin(){
+		for(Request req : requests_done){
+			System.out.println(String.format("Email: %s\ncc_num: %d\nSweetheart: %s\nDone: %b\nMember: %s\nSong: %s - %s\n\n\n", req.getEmail(), req.getCcNum(), req.getSweetheart(), req.getDone(), req.getMember().getName(), req.getSong().getTitle(), req.getSong().getArtist()));
+		}	
+	}
+
 	public static void mainMenu() {
 		
 		while(true) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("\n\nWelcome to the Serenaders' Music Club Valentine's Song System!\nSelect the action to do:\n1 - Customers - Order a song for Valentine's Day\n2 - Club members - Get a report of the requests for your song\n3 - Club members - Report back that your songs are done\n4 - Admin - Show data for all club members\nEnter 1, 2, 3 or 4:");
-			
-			String option = sc.next();
-			
-			if(option.equals("exit")){
-				break;
-			} else if (option.equals("1")){
-				Order();
-			} else if (option.equals("2")){
-				songReport();
-			} else if (option.equals("3")){
-				Songs_done();
-			} else if (option.equals("4")){
-				
+			try{
+				String option = sc.next();
+
+				if(option.equals("exit")){
+					break;
+				} else if (option.equals("1")){
+					Order();
+				} else if (option.equals("2")){
+					songReport();
+				} else if (option.equals("3")){
+					Songs_done();
+				} else if (option.equals("4")){
+					admin();	
+				}
+			} catch (Exception e){
+				System.out.println("You broke something start over or something");
+				System.exit(1);
 			}
 		}
-
 	}
 }

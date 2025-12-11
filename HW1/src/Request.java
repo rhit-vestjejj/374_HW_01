@@ -38,4 +38,8 @@ public class Request {
     public Song getSong() {
         return song;
     }
+
+    public void setDone(){
+        this.done = true;
+    }
 }
