@@ -85,13 +85,6 @@ public class Main {
 
 		String choice = sc.nextLine();
 		
-		System.out.println("\n\nEnter your email address:");
-		String email = sc.nextLine();
-		System.out.println("Enter your credit card number:");
-		String cc_num = sc.nextLine();
-		System.out.println("Enter your sweetheart's name:");
-		String sweetheart = sc.nextLine();
-		
 		Clubmember member = Clubmembers.get(Integer.parseInt(choice) - 1);
 		Song song = AllSongs.get(member);
 
@@ -101,6 +94,13 @@ public class Main {
 			System.out.println("\n\n\nNot taking orders");
 			return;
 		}	
+		
+		System.out.println("\n\nEnter your email address:");
+		String email = sc.nextLine();
+		System.out.println("Enter your credit card number:");
+		String cc_num = sc.nextLine();
+		System.out.println("Enter your sweetheart's name:");
+		String sweetheart = sc.nextLine();
 		requests.add(new Request(email, Long.parseLong(cc_num), sweetheart, member, song));
 
 
@@ -133,6 +133,7 @@ public class Main {
 		for(Request req: requests){
 			if (req.getMember().getMemberId() == memberId){
 				memberReq.add(req);
+				req.setSongCheckout();
 			}
 		}
 		System.out.println("Look for an email with a list of all the sweethearts to sing to!");
@@ -152,13 +153,18 @@ public class Main {
 		}
 		
 		AllSongs.remove(member);
-
+		
+		
 	}
 
 	public static void admin(){
 		for(Request req : requests_done){
-			System.out.println(String.format("Email: %s\ncc_num: %d\nSweetheart: %s\nDone: %b\nMember: %s\nSong: %s - %s\n\n\n", req.getEmail(), req.getCcNum(), req.getSweetheart(), req.getDone(), req.getMember().getName(), req.getSong().getTitle(), req.getSong().getArtist()));
-		}	
+			System.out.println(String.format("Email: %s\ncc_num: %d\nSweetheart: %s\nSong Checkout: %s\nDone: %b\nMember: %s\nSong: %s - %s\n\n\n", req.getEmail(), req.getCcNum(), req.getSweetheart(), req.getSongCheckout(), req.getDone(), req.getMember().getName(), req.getSong().getTitle(), req.getSong().getArtist()));
+
+		}
+		for(Request req : requests){
+			System.out.println("Email:" +  req.getEmail() + "\ncc_num: " + req.getCcNum() + "\nSweetheart: " + req.getSweetheart() + "\nSong Checkout: " + req.getSongCheckout() + "\nDone: " + req.getDone() + "\nMember: " + req.getMember().getName() + "\nSong: " + req.getSong().getTitle() + " - " + req.getSong().getArtist() + "\n\n\n"	);
+		}
 	}
 
 	public static void mainMenu() {
@@ -182,7 +188,7 @@ public class Main {
 				}
 			} catch (Exception e){
 				System.out.println("You broke something start over or something");
-				System.exit(1);
+				//System.out.println(e.getMessage());
 			}
 		}
 	}

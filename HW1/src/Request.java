@@ -2,8 +2,8 @@ public class Request {
     private String email;
     private long cc_num;
     private String sweetheart;
-    private Boolean done;
-
+    private Boolean done = false;
+    private Boolean songCheckout = false;
     private Clubmember member;
     private Song song;
 
@@ -41,5 +41,13 @@ public class Request {
 
     public void setDone(){
         this.done = true;
+    }
+
+    public Boolean getSongCheckout(){
+        return songCheckout;
+    }
+
+    public void setSongCheckout(){
+        this.songCheckout = true;
     }
 }
